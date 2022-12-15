@@ -1,0 +1,71 @@
+# 规范文档参考:
+# 中文：https://github.com/Serverless-Devs/Serverless-Devs/blob/master/spec/zh/0.0.2/serverless_package_model/3.package_model.md#组件模型规范
+# English: https://github.com/Serverless-Devs/Serverless-Devs/blob/master/spec/en/0.0.2/serverless_package_model/3.package_model.md#Component-model-specification
+# --------------
+# Package 开发发布最佳实践:
+#   - [社区讨论 #62](https://github.com/Serverless-Devs/Serverless-Devs/discussions/62);
+#   - [社区讨论 #407](https://github.com/Serverless-Devs/Serverless-Devs/discussions/407);
+#   - [社区讨论 #439](https://github.com/Serverless-Devs/Serverless-Devs/discussions/439);
+
+Type: Component
+Name: edgeroutine
+Provider:
+  - alibabacloud
+Version: 0.0.1
+Description: 阿里云edgeroutine一键部署方案
+HomePage: 项目首页地址
+Tags: #标签详情
+  - 部署函数
+  - 部署组件
+Category: 基础云服务 # 基础云服务
+Service: # 使用的服务
+  Edgeroutine:
+Commands: # 指令，格式为指令：指令描述，例如：
+  deploy: 部署Edgeroutine
+  list: 查看Edgeroutine列表
+Properties:
+  erName: 
+    type: string
+    description: edgeroutine名称
+    title: 'Edgeroutine名字'
+  erDescription:
+    type: string
+    description: edgeroutine描述
+    title: 'Edgeroutine描述'
+  code:
+    type: string
+    description: '本地代码路径'
+    title: 'edgeroutine源码文件的路径'
+  envConf:
+    type: object
+    required:
+      - staging
+      - production
+    properties:
+      staging: 
+        title: '预发环境实例规格'
+        type: 'string'
+        default: '50ms'
+        enum:
+          - '5ms'
+          - '50ms'
+          - '100ms'
+      production: 
+        title: '生产环境实例规格'
+        type: 'string'
+        default: '100ms'
+        enum:
+          - '5ms'
+          - '50ms'
+          - '100ms'
+  envs: 
+    type: array
+    title: '环境'
+    descripton: '指定部署er程序的环境'
+    items:
+      oneOf:
+        - type: string
+          minLength: 1
+          examples:
+            - production 
+            - staging

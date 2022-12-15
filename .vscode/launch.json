@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "component debug",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/example",
+        "env":{
+          "NODE_ENV":  "development"
+        },
+        "runtimeExecutable": "s",
+        "windows": {
+          "runtimeExecutable": "s"
+        },
+        "args": [
+          "deploy"
+        ]
+      }
+    ]
+  }
