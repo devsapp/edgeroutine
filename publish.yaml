@@ -11,7 +11,7 @@ Type: Component
 Name: edgeroutine
 Provider:
   - alibabacloud
-Version: 0.0.3
+Version: 0.0.4
 Description: 阿里云edgeroutine一键部署方案
 HomePage: 项目首页地址
 Tags: #标签详情
