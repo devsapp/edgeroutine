@@ -5,7 +5,7 @@ import * as $OpenApi from '@alicloud/openapi-client';
 import * as $Util from '@alicloud/tea-util';
 import get from 'lodash.get';
 import logger from './common/logger';
-
+import { CreateRoutineRequest, CommitStagingRoutineCodeRequest, DeleteRoutineCodeRevisionRequest, UploadRoutineCodeRequest, PublishRoutineCodeRevisionRequest, DescribeRoutineCodeRevisionRequest, ErCreate, ErDetail } from './@types';
 function responseHandler(response) {
     if (response.statusCode === 200) {
         return response.body;
@@ -40,14 +40,14 @@ export default class Client {
      * 创建ER
      * @param data 
      */
-    public async CreateRoutine(data: ErRequest.CreateRoutineRequest): Promise<ErResponse.ErCreate> {
+    public async CreateRoutine(data: CreateRoutineRequest): Promise<ErCreate> {
         const createRoutineRequest = new dcdnClient.CreateRoutineRequest(data);
         const response = await this.requestClient.createRoutineWithOptions(createRoutineRequest, this.defaultRuntimeOptions);
         return get(responseHandler(response), 'content');
     }
 
 
-    public async EditRoutineConf(data: ErRequest.CreateRoutineRequest) {
+    public async EditRoutineConf(data: CreateRoutineRequest) {
         const createRoutineRequest = new dcdnClient.EditRoutineConfRequest(data);
         await this.requestClient.editRoutineConfWithOptions(createRoutineRequest, this.defaultRuntimeOptions);
     }
@@ -58,19 +58,19 @@ export default class Client {
         return get(responseHandler(response));
     }
 
-    public async DeleteRoutineCodeRevision(data: ErRequest.DeleteRoutineCodeRevisionRequest) {
+    public async DeleteRoutineCodeRevision(data: DeleteRoutineCodeRevisionRequest) {
         const requestData = new dcdnClient.DeleteRoutineCodeRevisionRequest(data);
         const response = await this.requestClient.deleteRoutineCodeRevisionWithOptions(requestData, this.defaultRuntimeOptions);
         return get(responseHandler(response), 'content.OssPostConfig');
     }
 
-    public async UploadRoutineCode(data: ErRequest.UploadRoutineCodeRequest) {
+    public async UploadRoutineCode(data: UploadRoutineCodeRequest) {
         const createRoutineRequest = new dcdnClient.UploadRoutineCodeRequest(data);
         const response = await this.requestClient.uploadRoutineCodeWithOptions(createRoutineRequest, this.defaultRuntimeOptions);
         return get(responseHandler(response), 'content.OssPostConfig');
     }
 
-    public async UploadStagingRoutineCode(data: ErRequest.UploadRoutineCodeRequest) {
+    public async UploadStagingRoutineCode(data: UploadRoutineCodeRequest) {
         const createRoutineRequest = new dcdnClient.UploadStagingRoutineCodeRequest(data);
         const response = await this.requestClient.uploadStagingRoutineCodeWithOptions(createRoutineRequest, this.defaultRuntimeOptions);
         return get(responseHandler(response), 'content.OssPostConfig');
@@ -86,7 +86,7 @@ export default class Client {
      * @param data 
      * @returns  正式版本编号
      */
-    public async CommitStagingRoutineCode(data: ErRequest.CommitStagingRoutineCodeRequest): Promise<string> {
+    public async CommitStagingRoutineCode(data: CommitStagingRoutineCodeRequest): Promise<string> {
         const createRoutineRequest = new dcdnClient.CommitStagingRoutineCodeRequest(data);
         const response = await this.requestClient.commitStagingRoutineCodeWithOptions(createRoutineRequest, this.defaultRuntimeOptions);
         return get(responseHandler(response), 'content.CodeRevision');
@@ -97,7 +97,7 @@ export default class Client {
      * @param data 
      * @returns 指定的版本号
      */
-    public async PublishRoutineCodeRevision(data: ErRequest.PublishRoutineCodeRevisionRequest): Promise<string> {
+    public async PublishRoutineCodeRevision(data: PublishRoutineCodeRevisionRequest): Promise<string> {
         const createRoutineRequest = new dcdnClient.PublishRoutineCodeRevisionRequest(data);
         const response = await this.requestClient.publishRoutineCodeRevisionWithOptions(createRoutineRequest, this.defaultRuntimeOptions);
         return get(responseHandler(response), 'content.CodeRevision');
@@ -123,7 +123,7 @@ export default class Client {
      * @param data  {name,selectCodeRevision} name:er名，selectCodeRevision: 版本
      * @returns 
      */
-    public async DescribeRoutineCodeRevision(data: ErRequest.DescribeRoutineCodeRevisionRequest): Promise<ErResponse.ErDetail> {
+    public async DescribeRoutineCodeRevision(data: DescribeRoutineCodeRevisionRequest): Promise<ErDetail> {
         const requestOption = new dcdnClient.DescribeRoutineCodeRevisionRequest(data);
         const response = await this.requestClient.describeRoutineCodeRevisionWithOptions(requestOption, this.defaultRuntimeOptions);
         return get(responseHandler(response), 'content');

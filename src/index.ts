@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import logger from './common/logger';
 import { InputProps } from './common/entity';
 import DcdnClient from './client';
-
+import { ErDetail, StandedPublishData, AccessData, ErrorInfo, SpecConfig, FullErInputData } from './@types';
 function decodeBase64(data: string) {
   return Buffer.from(data, 'base64').toString('ascii');
 }
@@ -59,13 +59,13 @@ export default class DCDN {
     if (!cr) {
       return '';
     }
-    const erInfo: ErResponse.ErDetail = await client.DescribeRoutineCodeRevision({ name, selectCodeRevision: cr });
+    const erInfo: ErDetail = await client.DescribeRoutineCodeRevision({ name, selectCodeRevision: cr });
     erInfo.CodeDescription = decodeBase64(erInfo.CodeDescription);
     erInfo.ErCode = decodeBase64(erInfo.ErCode);
     return erInfo.ErCode;
   }
 
-  private async publishLocalFileToEdgeRoutine(data: ErData.StandedPublishData & ErData.AccessData, forceUpdate = false) {
+  private async publishLocalFileToEdgeRoutine(data: StandedPublishData & AccessData, forceUpdate = false) {
     let { code, erName, envs } = data;
     let erDescription = envs.join('_') + '_' + Date.now().toString();
     let finalResult = '';
@@ -120,8 +120,8 @@ export default class DCDN {
           logger.info(`file upload failed,please retry`);
         }
       } catch (e) {
-        const message = get(e, 'data.Message');
-        if (message === ErResponse.ErrorInfo.LIMIT_PUB_NUMBER) {
+        const message = get(e, 'Message');
+        if (message === ErrorInfo.LIMIT_PUB_NUMBER) {
           const deleteAndRetry = async () => {
             const result = await client.DescribeRoutine(erName);
             let codeRevs = get(result, 'CodeRevs', []);
@@ -172,7 +172,7 @@ export default class DCDN {
     const { AccessKeyID, AccessKeySecret } = inputs.credentials;
     const client = this.createClient(AccessKeyID, AccessKeySecret);
     const [name, selectCodeRevision] = inputs.argsObj;
-    const result: ErResponse.ErDetail = await client.DescribeRoutineCodeRevision({ name, selectCodeRevision });
+    const result: ErDetail = await client.DescribeRoutineCodeRevision({ name, selectCodeRevision });
     result.CodeDescription = decodeBase64(result.CodeDescription);
     result.ErCode = decodeBase64(result.ErCode);
     return result;
@@ -204,7 +204,7 @@ export default class DCDN {
         }
       }
     } catch (e) {
-      const message = get(e, 'data.Message');
+      const message = get(e, 'Message');
       throw new Error(message);
     }
   }
@@ -217,7 +217,7 @@ export default class DCDN {
   public async deploy(inputs: InputProps) {
     const { AccessKeyID, AccessKeySecret } = inputs.credentials;
     const client = this.createClient(AccessKeyID, AccessKeySecret);
-    const data: ErData.FullErInputData = inputs.props;
+    const data: FullErInputData = inputs.props;
     const isForceUpdate = this.checkForceUpdate(inputs.argsObj)
     const { erName, erDescription, envConf, envs = [], code } = data;
     try {
@@ -226,10 +226,10 @@ export default class DCDN {
         await client.CreateRoutine({
           name: erName, description: erDescription, envConf: {
             staging: {
-              specName: get(envConf, 'staging', ErRequest.SpecConfig.B)
+              specName: get(envConf, 'staging', SpecConfig.B)
             },
             production: {
-              specName: get(envConf, 'production', ErRequest.SpecConfig.C)
+              specName: get(envConf, 'production', SpecConfig.C)
             }
           }
         });
@@ -237,7 +237,7 @@ export default class DCDN {
       const requestData = Object.assign({}, { erName, erDescription, code, envs }, { AccessKeyID, AccessKeySecret })
       return await this.publishLocalFileToEdgeRoutine(requestData, isForceUpdate);
     } catch (e) {
-      throw new Error(e.data.Message);
+      throw new Error(e.Message);
     }
   }
 
