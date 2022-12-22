@@ -131,7 +131,7 @@ export default class Client {
 
     public async DescribeRoutineSpec() {
         const requestOption = new dcdnClient.DescribeRoutineCodeRevisionRequest({});
-        const response = await this.requestClient.describeRoutineSpecWithOptions(requestOption, this.defaultRuntimeOptions);
+        const response = await this.requestClient.describeRoutineSpecWithOptions(requestOption);
         return get(responseHandler(response), 'content.Specs');;
     }
 

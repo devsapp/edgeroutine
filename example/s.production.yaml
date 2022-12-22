@@ -3,7 +3,7 @@ name: component-test   #  项目名称
 access: default # 密钥别名
 services:
   dcdn:
-    component: ${path(..)}  # 这里引入的是相对路径，正式配置替换成你自己的component名称即可 
+    component: edgeroutine  # 这里引入的是相对路径，正式配置替换成你自己的component名称即可 
     props:
       erName: cms
       erDescription: 

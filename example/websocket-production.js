@@ -7,11 +7,8 @@ const init = {
 const GET_TYPE = { type: "text" };
 
 const route = {
-    '/': 'http://xxx/www-screen',
-    '/screen': 'http://xxx/www-screen',
-    '/player': 'http://xxx/www-player',
-    '/admin': 'http://xxx/www-admin',
-    '/api': 'http://xxx/api'
+    '/': 'https://docs.serverless-devs.com/serverless-devs/quick_start',
+
 }
 
 
@@ -45,13 +42,6 @@ function getRouteReg(route) {
 
 const routeReg = getRouteReg(route);
 
-// const routeReg = {
-//     '/screen': new RegExp('(^\/screen$)|(^\/screen\/)'),
-//     '/player': new RegExp('(^\/player$)|(^\/player\/)'),
-//     '/admin': new RegExp('(^\/admin$)|(^\/admin\/)'),
-//     '/api': new RegExp('(^\/api$)|(^\/api\/)'),
-//     '/': new RegExp('^\/$')
-// }
 const regValues = Object.keys(routeReg).map(key => ({ route: key, reg: routeReg[key] }));
 
 async function handleRequest(request) {

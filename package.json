@@ -1,6 +1,6 @@
 {
   "name": "edgeroutine",
-  "version": "0.0.1",
+  "version": "0.0.9",
   "description": "This is a component for alibaba cloud dcdn",
   "autoInstall": false,
   "homepage": "https://www.serverless-devs.com",
