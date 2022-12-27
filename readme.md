@@ -45,9 +45,9 @@ s deploy
 
 ### 指令说明
 #### 无配置文件操作edgeroutine
-##### 查看Edgeroutine应用列表
+##### 查看指定Edgeroutine的版本列表
 ```bash
-s cli edgeroutine list 
+s cli edgeroutine list [ername]
 ```
 ##### 查看指定Edgeroutine代码
 ```bash
@@ -55,12 +55,12 @@ s cli edgeroutine [ername] [selectCodeRevision]
 ```
 
 ##### 删除指定Edgeroutine
-```
-s cli edgeroutine [ername]
+```bash
+s cli edgeroutine delete [ername]
 ```
 #### 强制删除指定Edgeroutine(持续集成使用)
-```
-s cli edgeroutine [ername] --force|-f
+```bash
+s cli edgeroutine delete [ername] --force|-f
 ```
 #### 配置文件操作edgeroutine
 ##### 执行部署
